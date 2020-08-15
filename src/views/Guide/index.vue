@@ -1,15 +1,13 @@
 <template>
-    <div>
-        <canvas id="triangle-lost-in-space" resize="true"></canvas>
-        <div class="background"></div>
+    <div class="main">
         <!--        <GuideNav/>-->
         <div :class="NavMain">
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                <router-link to="/guide/note">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
+                <router-link to="/">
                     <el-menu-item index="1">主页</el-menu-item>
                 </router-link>
-                <router-link to="/guide/note">
-                    <el-menu-item index="2" disabled>更多</el-menu-item>
+                <router-link to="/photo">
+                    <el-menu-item index="2">漫画</el-menu-item>
                 </router-link>
                 <router-link to="/guide/note">
                     <el-menu-item index="3" disabled>更多</el-menu-item>
@@ -17,7 +15,7 @@
                 <router-link to="/guide/note">
                     <el-menu-item index="4" disabled>更多</el-menu-item>
                 </router-link>
-                <router-link to="/guide/login">
+                <router-link to="/guide/register">
                     <el-menu-item index="5" class="float-right">注册</el-menu-item>
                 </router-link>
                 <router-link to="/guide/login">
@@ -28,61 +26,65 @@
                 </router-link>
             </el-menu>
         </div>
-        <GuideLink/>
+        <!--        <GuideLink/>-->
         <router-view/>
     </div>
 </template>
 
 <script>
+    import {mapState, mapMutations} from 'vuex'
 
     // import GuideNav from './Component/Nav.vue'
-    import GuideLink from './Component/Link.vue'
-
+    // import GuideLink from './Component/Link.vue'
     export default {
         name: "index",
         data() {
             return {
-                activeIndex: '1',
-                NavMain:''
-            };
+                // activeIndex: '1',
+                NavMain: ''
+            }
         },
-        mounted() {
-            let that=this;
-            setTimeout(()=>{
-                that.NavMain='NavMain'
-            },2000)
+        computed: {
+            ...mapState(['GuideNum']),
+            activeIndex() {
+                if (this.$route.path === '/')
+                    return '1';
+                else if (this.$route.path === '/photo/' || this.$route.path === '/photo')
+                    return '2';
+                else {
+                    return '0'
+                }
+            }
         },
-        methods: {},
-        components: {GuideLink}
+        created() {
+            let that = this;
+            setTimeout(() => {
+                that.NavMain = 'NavMain' //两秒后动画
+            }, 10000)
+        },
+
+        methods: {
+            ...mapMutations(['changeGuide']),
+        },
+        // components: {GuideLink}
     }
 </script>
 <style scoped>
-    .background{
-        background: url("../../assets/background.jpg") no-repeat;
-        background-size: 100%;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        z-index: -99;
+    /*媒体查询*/
+    @media screen and (max-width: 700px) {
+        .el-menu {
+            display: none;
+        }
     }
-    html, body {
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+
+    .is-active {
+        color: #409EFF !important;
     }
+
     /*去除Nav的下划线*/
     li {
         text-decoration: none;
         display: inline-block;
-    }
-
-    canvas {
-        width: 100%!important;
-        height: 100%!important;
-        position: absolute;
-        z-index: -1;
     }
 
     .NavMain {

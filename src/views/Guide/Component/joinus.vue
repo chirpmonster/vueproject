@@ -12,13 +12,14 @@
 
 <style scoped>
     .main {
+        position: absolute;
         display: flex;
-        width: 50%;
         height: calc(100vh - 61px);
+        width: 100vw;
         justify-content: center;
         align-items: center;
     }
     img{
-        width: 60%;
+        width: 20%;
     }
 </style>
